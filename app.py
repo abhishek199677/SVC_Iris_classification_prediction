@@ -2,8 +2,18 @@ import pandas as pd
 import joblib
 import streamlit as st
 import plotly.express as px
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report ,confusion_matrix  
 import numpy as np
+
+
+# Load models and scalers
+models_and_scalers = {
+    "logistics_binary": ("logistics_binary.joblib", "logistics_binary_scaler.joblib"),
+    "logistics_ovr": ("logistics_ovr.joblib", "logistics_ovr_scaler.joblib"),
+    "logistics_multinomial": ("logistics_multinomial.joblib", "logistics_multinomial_scaler.joblib"),
+    "svm_binary": ("svm_binary.joblib", "svm_binary_scaler.joblib"),
+    "svm_multi": ("svm_multi.joblib", "svm_multi_scaler.joblib")
+}
 
 # Set page config first
 st.set_page_config(
@@ -66,17 +76,17 @@ def main():
     with st.sidebar:
         st.header("Model Configuration")
         model_options = [
-            "Logistic Regression Binary Classification",
-            "Logistic Regression OVR Multiclass Classification",
-            "Logistic Regression Multinomial Multiclass Classification",
-            "SVM(C) Binary Classification",
-            "SVM(C) Multiclass Classification"
+            "logistics_binary",
+            "logistics_ovr",
+            "logistics_multinomial`",
+            "svm_binary",
+            "svm_multi"
         ]
         selected_model = st.selectbox("Choose Model", model_options)
         
         model_info = {
-            "Logistic Regression Binary Classification": "Distinguishes Setosa from other species",
-            "SVM(C) Binary Classification": "SVM classifier for Setosa vs others",
+            "logistics_binary": "Distinguishes Setosa from other species",
+            "svm_binary": "SVM classifier for Setosa vs others",
             # Add descriptions for other models
         }
         st.markdown(f"**Model Info:** {model_info.get(selected_model, '')}")
